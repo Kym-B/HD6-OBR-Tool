@@ -148,6 +148,22 @@ async function loadStatBlocks() {
   });
 }
 
+// Tab Switching
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const target = button.getAttribute('data-tab');
+
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabContents.forEach(tab => tab.classList.add('hidden'));
+
+    button.classList.add('active');
+    document.getElementById(`tab-${target}`).classList.remove('hidden');
+  });
+});
+
 // Event Listeners
 loginButton.addEventListener('click', async () => {
   const { data, error } = await supabase.auth.signInWithPassword({

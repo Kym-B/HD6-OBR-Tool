@@ -16,41 +16,68 @@
       <button id="login-button">Login</button>
       <button id="signup-button">Sign Up</button>
     </div>
+
     <div id="dashboard" class="panel hidden">
       <p>Welcome, <span id="user-name"></span></p>
       <button id="logout-button">Logout</button>
 
-      <hr>
+      <div id="tab-bar">
+        <button class="tab-button" data-tab="characters">Characters</button>
+        <button class="tab-button" data-tab="npcs">NPCs</button>
+        <button class="tab-button" data-tab="statblocks">Stat Blocks</button>
+        <button class="tab-button" data-tab="combat">Combat</button>
+      </div>
 
-      <section id="character-section">
+      <div class="tab-content" id="tab-characters">
         <h2>Player Characters</h2>
         <button id="load-characters">Load Characters</button>
         <ul id="character-list"></ul>
         <button id="create-character">+ New Character</button>
-      </section>
+      </div>
 
-      <section id="named-npcs">
+      <div class="tab-content hidden" id="tab-npcs">
         <h2>Named NPCs</h2>
         <button id="load-npcs">Load NPCs</button>
         <ul id="npc-list"></ul>
         <button id="create-npc">+ New NPC</button>
-      </section>
+      </div>
 
-      <section id="stat-blocks">
+      <div class="tab-content hidden" id="tab-statblocks">
         <h2>Extras / Stat Blocks</h2>
         <button id="load-stat-blocks">Load Stat Blocks</button>
         <ul id="statblock-list"></ul>
         <button id="create-stat-block">+ New Stat Block</button>
-      </section>
+      </div>
 
-      <section id="combat-tracker">
+      <div class="tab-content hidden" id="tab-combat">
         <h2>Combat Tracker</h2>
         <button id="start-combat">Start Combat</button>
         <ul id="combat-list"></ul>
         <button id="end-combat">End Combat</button>
-      </section>
+      </div>
     </div>
   </div>
+
+  <!-- Modal for Stat Block Creation/Editing -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="modal-close">&times;</span>
+      <form id="modal-form">
+        <h3>Edit Stat Block</h3>
+        <label>Label: <input type="text" id="modal-label" required /></label><br>
+        <label>Defense: <input type="number" id="modal-def" required /></label><br>
+        <label>Initiative: <input type="number" id="modal-init" required /></label><br>
+        <label>Resolve: <input type="number" id="modal-res" required /></label><br>
+        <label>DEX: <input type="number" id="modal-dex" required /></label><br>
+        <label>PER: <input type="number" id="modal-per" required /></label><br>
+        <label>STR: <input type="number" id="modal-str" required /></label><br>
+        <label>Blasters: <input type="number" id="modal-blasters" required /></label><br>
+        <label>Intimidate: <input type="number" id="modal-intimidate" required /></label><br>
+        <button type="submit" id="modal-submit">Save</button>
+      </form>
+    </div>
+  </div>
+
   <script type="module" src="app.js"></script>
 </body>
 </html>

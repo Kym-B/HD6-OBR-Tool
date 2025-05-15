@@ -126,11 +126,11 @@ async function loadStatBlocks() {
       SKILLS: Blasters ${stat.skills.Blasters}, Intimidate ${stat.skills.Intimidate}`;
 
     const editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
+    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
     editBtn.onclick = () => openModal(stat);
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
+    deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
     deleteBtn.onclick = async () => {
       if (!confirm(`Delete ${stat.label}?`)) return;
       const { error } = await supabase
@@ -149,10 +149,15 @@ async function loadStatBlocks() {
 }
 
 // Tab Switching
+// Default to Home tab
 const tabButtons = document.querySelectorAll('.tab-button');
 const tabContents = document.querySelectorAll('.tab-content');
 
 tabButtons.forEach(button => {
+  if (button.getAttribute('data-tab') === 'home') {
+    button.classList.add('active');
+    document.getElementById('tab-home').classList.remove('hidden');
+  }
   button.addEventListener('click', () => {
     const target = button.getAttribute('data-tab');
 

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HD6 GM Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="app">
@@ -22,13 +23,26 @@
       <button id="logout-button">Logout</button>
 
       <div id="tab-bar">
-        <button class="tab-button" data-tab="characters">Characters</button>
-        <button class="tab-button" data-tab="npcs">NPCs</button>
-        <button class="tab-button" data-tab="statblocks">Stat Blocks</button>
-        <button class="tab-button" data-tab="combat">Combat</button>
+        <button class="tab-button active" data-tab="home"><i class="fas fa-home"></i> Home</button>
+        <button class="tab-button" data-tab="characters"><i class="fas fa-user"></i> Characters</button>
+        <button class="tab-button" data-tab="npcs"><i class="fas fa-users"></i> NPCs</button>
+        <button class="tab-button" data-tab="statblocks"><i class="fas fa-dice-d20"></i> Stat Blocks</button>
+        <button class="tab-button" data-tab="combat"><i class="fas fa-crosshairs"></i> Combat</button>
       </div>
 
-      <div class="tab-content" id="tab-characters">
+      <div class="tab-content" id="tab-home">
+        <h2>Session Overview</h2>
+        <p>Welcome to the HyperspaceD6 GM Dashboard. Use the tabs above to manage player characters, NPCs, stat blocks, and combat encounters.</p>
+        <ul>
+          <li><strong>Characters:</strong> Manage player sheets</li>
+          <li><strong>NPCs:</strong> Create recurring personalities</li>
+          <li><strong>Stat Blocks:</strong> Reuse common mooks and enemies</li>
+          <li><strong>Combat:</strong> Track initiative and conditions</li>
+        </ul>
+        <p>Start by selecting a tab.</p>
+      </div>
+
+      <div class="tab-content hidden" id="tab-characters">
         <h2>Player Characters</h2>
         <button id="load-characters">Load Characters</button>
         <ul id="character-list"></ul>

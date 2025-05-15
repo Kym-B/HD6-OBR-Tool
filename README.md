@@ -1,0 +1,3 @@
+An all-in-one tool for GMing HyperspaceD6 Star Wars within Owlbear Rodep.
+
+More readme to follow...

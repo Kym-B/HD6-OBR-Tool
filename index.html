@@ -9,6 +9,13 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <nav id="top-nav" class="hidden">
+    <button data-tab="home" class="nav-icon"><i class="fas fa-home"></i></button>
+    <button data-tab="characters" class="nav-icon"><i class="fas fa-user"></i></button>
+    <button data-tab="npcs" class="nav-icon"><i class="fas fa-users"></i></button>
+    <button data-tab="statblocks" class="nav-icon"><i class="fas fa-dice-d20"></i></button>
+    <button data-tab="combat" class="nav-icon"><i class="fas fa-crosshairs"></i></button>
+  </nav>
   <div id="app">
     <h1>HD6 GM Dashboard</h1>
     <div id="login-panel" class="panel hidden">
@@ -44,30 +51,30 @@
 
       <div class="tab-content hidden" id="tab-characters">
         <h2>Player Characters</h2>
-        <button id="load-characters">Load Characters</button>
+        <button id="load-characters"><i class="fas fa-sync-alt"></i> Load Characters</button>
         <ul id="character-list"></ul>
-        <button id="create-character">+ New Character</button>
+        <button id="create-character"><i class="fas fa-plus"></i> New Character</button>
       </div>
 
       <div class="tab-content hidden" id="tab-npcs">
         <h2>Named NPCs</h2>
-        <button id="load-npcs">Load NPCs</button>
+        <button id="load-npcs"><i class="fas fa-sync-alt"></i> Load NPCs</button>
         <ul id="npc-list"></ul>
-        <button id="create-npc">+ New NPC</button>
+        <button id="create-npc"><i class="fas fa-plus"></i> New NPC</button>
       </div>
 
       <div class="tab-content hidden" id="tab-statblocks">
         <h2>Extras / Stat Blocks</h2>
-        <button id="load-stat-blocks">Load Stat Blocks</button>
+        <button id="load-stat-blocks"><i class="fas fa-sync-alt"></i> Load Stat Blocks</button>
         <ul id="statblock-list"></ul>
-        <button id="create-stat-block">+ New Stat Block</button>
+        <button id="create-stat-block"><i class="fas fa-plus"></i> New Stat Block</button>
       </div>
 
       <div class="tab-content hidden" id="tab-combat">
         <h2>Combat Tracker</h2>
-        <button id="start-combat">Start Combat</button>
+        <button id="start-combat"><i class="fas fa-play"></i> Start Combat</button>
         <ul id="combat-list"></ul>
-        <button id="end-combat">End Combat</button>
+        <button id="end-combat"><i class="fas fa-stop"></i> End Combat</button>
       </div>
     </div>
   </div>

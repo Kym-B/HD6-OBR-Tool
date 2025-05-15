@@ -1,0 +1,9 @@
+{
+  "id": "hd6-obr-tool",
+  "name": "HD6 GM Dashboard",
+  "version": "0.1.0",
+  "main": "index.html",
+  "permissions": [],
+  "description": "GM control panel extension for HyperspaceD6 in Owlbear Rodeo",
+  "icon": "assets/icon.png"
+}

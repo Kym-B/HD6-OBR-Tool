@@ -1,0 +1,56 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HD6 GM Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <h1>HD6 GM Dashboard</h1>
+    <div id="login-panel" class="panel hidden">
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button id="login-button">Login</button>
+      <button id="signup-button">Sign Up</button>
+    </div>
+    <div id="dashboard" class="panel hidden">
+      <p>Welcome, <span id="user-name"></span></p>
+      <button id="logout-button">Logout</button>
+
+      <hr>
+
+      <section id="character-section">
+        <h2>Player Characters</h2>
+        <button id="load-characters">Load Characters</button>
+        <ul id="character-list"></ul>
+        <button id="create-character">+ New Character</button>
+      </section>
+
+      <section id="named-npcs">
+        <h2>Named NPCs</h2>
+        <button id="load-npcs">Load NPCs</button>
+        <ul id="npc-list"></ul>
+        <button id="create-npc">+ New NPC</button>
+      </section>
+
+      <section id="stat-blocks">
+        <h2>Extras / Stat Blocks</h2>
+        <button id="load-stat-blocks">Load Stat Blocks</button>
+        <ul id="statblock-list"></ul>
+        <button id="create-stat-block">+ New Stat Block</button>
+      </section>
+
+      <section id="combat-tracker">
+        <h2>Combat Tracker</h2>
+        <button id="start-combat">Start Combat</button>
+        <ul id="combat-list"></ul>
+        <button id="end-combat">End Combat</button>
+      </section>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

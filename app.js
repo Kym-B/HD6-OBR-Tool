@@ -201,7 +201,9 @@ logoutButton.addEventListener('click', async () => {
 loadCharactersButton.addEventListener('click', loadCharacters);
 loadNpcsButton.addEventListener('click', loadNpcs);
 loadStatBlocksButton.addEventListener('click', loadStatBlocks);
-createStatBlockButton.addEventListener('click', () => openModal());
+if (createStatBlockButton) {
+  createStatBlockButton.addEventListener('click', () => openModal());
+}
 
 supabase.auth.getSession().then(({ data: { session } }) => {
   closeModal();

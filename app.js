@@ -206,10 +206,10 @@ if (createStatBlockButton) {
 }
 
 supabase.auth.getSession().then(({ data: { session } }) => {
-  closeModal();
-  switchTab('home');
   if (session) {
+    closeModal();
     showDashboard(session.user);
+    switchTab('home');
   } else {
     showLogin();
   }

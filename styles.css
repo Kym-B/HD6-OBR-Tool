@@ -1,3 +1,9 @@
+#app {
+  max-width: 960px;
+  margin: auto;
+  padding: 1rem;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #1e1e2f;
@@ -36,12 +42,26 @@ h1 {
 #top-nav .nav-icon {
   background-color: #3b3b4f;
   border: none;
-  border-radius: 50%;
-  padding: 0.6rem;
-  font-size: 1.2rem;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
   color: #e0e0e0;
   cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  line-height: 1.2;
   transition: background-color 0.3s, color 0.3s;
+}
+
+#top-nav .nav-icon span {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: #c9d1d9;
 }
 
 #top-nav .nav-icon:hover {

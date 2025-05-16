@@ -1,6 +1,5 @@
 // app.js
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-import './supabase.js'; // Import Supabase initialization from external file
 
 // DOM elements
 const loginPanel = document.getElementById('login-panel');

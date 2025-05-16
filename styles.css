@@ -1,219 +1,243 @@
-#app {
-  max-width: 960px;
-  margin: auto;
-  padding: 1rem;
+// app.js
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+// DOM elements
+const loginPanel = document.getElementById('login-panel');
+const dashboard = document.getElementById('dashboard');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const loginButton = document.getElementById('login-button');
+const signupButton = document.getElementById('signup-button');
+const logoutButton = document.getElementById('logout-button');
+const userNameDisplay = document.getElementById('user-name');
+
+const loadCharactersButton = document.getElementById('load-characters');
+const characterList = document.getElementById('character-list');
+
+const loadNpcsButton = document.getElementById('load-npcs');
+const npcList = document.getElementById('npc-list');
+
+const loadStatBlocksButton = document.getElementById('load-stat-blocks');
+const statBlockList = document.getElementById('statblock-list');
+const createStatBlockButton = document.getElementById('create-stat-block');
+
+// Modal elements (assume added in index.html)
+const modal = document.getElementById('modal');
+const modalForm = document.getElementById('modal-form');
+const modalLabel = document.getElementById('modal-label');
+const modalDEF = document.getElementById('modal-def');
+const modalINIT = document.getElementById('modal-init');
+const modalRES = document.getElementById('modal-res');
+const modalDEX = document.getElementById('modal-dex');
+const modalPER = document.getElementById('modal-per');
+const modalSTR = document.getElementById('modal-str');
+const modalBlasters = document.getElementById('modal-blasters');
+const modalIntimidate = document.getElementById('modal-intimidate');
+const modalSubmit = document.getElementById('modal-submit');
+const modalClose = document.getElementById('modal-close');
+
+let currentUser = null;
+let editingStatBlockId = null;
+
+// Ensure modal is hidden on load
+if (modal) modal.classList.add('hidden');
+
+function openModal(stat = null) {
+  modal.classList.remove('hidden');
+  if (stat) {
+    editingStatBlockId = stat.id;
+    modalLabel.value = stat.label;
+    modalDEF.value = stat.derived.defense;
+    modalINIT.value = stat.derived.initiative;
+    modalRES.value = stat.derived.resolve;
+    modalDEX.value = stat.attributes.DEX;
+    modalPER.value = stat.attributes.PER;
+    modalSTR.value = stat.attributes.STR;
+    modalBlasters.value = stat.skills.Blasters;
+    modalIntimidate.value = stat.skills.Intimidate;
+  } else {
+    editingStatBlockId = null;
+    modalForm.reset();
+  }
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #1e1e2f;
-  color: #e0e0e0;
-  margin: 0;
-  padding: 1rem;
+function closeModal() {
+  modal.classList.add('hidden');
 }
 
-h1 {
-  text-align: center;
-  color: #e9e9f4;
+if (modalClose) {
+  modalClose.addEventListener('click', closeModal);
+}
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+});
+
+modalForm.onsubmit = async (e) => {
+  e.preventDefault();
+
+  const updated = {
+    label: modalLabel.value,
+    derived: {
+      defense: parseInt(modalDEF.value),
+      initiative: parseInt(modalINIT.value),
+      resolve: parseInt(modalRES.value)
+    },
+    attributes: {
+      DEX: parseInt(modalDEX.value),
+      PER: parseInt(modalPER.value),
+      STR: parseInt(modalSTR.value)
+    },
+    skills: {
+      Blasters: parseInt(modalBlasters.value),
+      Intimidate: parseInt(modalIntimidate.value)
+    },
+    armor_dice: 2,
+    equipment: {
+      weapons: ['Blaster Rifle'],
+      armor: 'Light Armor'
+    }
+  };
+
+  let error;
+  if (editingStatBlockId) {
+    ({ error } = await supabase.from('stat_blocks').update(updated).eq('id', editingStatBlockId));
+  } else {
+    ({ error } = await supabase.from('stat_blocks').insert([updated]));
+  }
+
+  if (error) return alert('Error saving stat block: ' + error.message);
+  closeModal();
+  loadStatBlocks();
+};
+
+async function loadStatBlocks() {
+  const { data, error } = await supabase
+    .from('stat_blocks')
+    .select('*');
+
+  if (error) {
+    alert('Error loading stat blocks: ' + error.message);
+    return;
+  }
+
+  statBlockList.innerHTML = '';
+  data.forEach(stat => {
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${stat.label}</strong> — DEF: ${stat.derived.defense}, INIT: ${stat.derived.initiative}, RES: ${stat.derived.resolve}<br>
+      ATTR: DEX ${stat.attributes.DEX}, PER ${stat.attributes.PER}, STR ${stat.attributes.STR}<br>
+      SKILLS: Blasters ${stat.skills.Blasters}, Intimidate ${stat.skills.Intimidate}`;
+
+    const editBtn = document.createElement('button');
+    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
+    editBtn.onclick = () => openModal(stat);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+    deleteBtn.onclick = async () => {
+      if (!confirm(`Delete ${stat.label}?`)) return;
+      const { error } = await supabase
+        .from('stat_blocks')
+        .delete()
+        .eq('id', stat.id);
+
+      if (error) return alert('Delete failed: ' + error.message);
+      loadStatBlocks();
+    };
+
+    li.appendChild(editBtn);
+    li.appendChild(deleteBtn);
+    statBlockList.appendChild(li);
+  });
 }
 
-.panel {
-  max-width: 600px;
-  margin: 2rem auto;
-  background-color: #2b2b3c;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.7);
+async function loadCharacters() {
+  if (!currentUser) return;
+
+  const { data, error } = await supabase
+    .from('characters')
+    .select('*')
+    .eq('owner_id', currentUser.id)
+    .eq('type', 'PC');
+
+  if (error) {
+    alert('Error loading characters: ' + error.message);
+    return;
+  }
+
+  characterList.innerHTML = '';
+  data.forEach(char => {
+    const li = document.createElement('li');
+    li.textContent = `${char.name} (${char.role})`;
+    characterList.appendChild(li);
+  });
 }
 
-#top-nav {
-  display: flex;
-  justify-content: center;
-  background-color: #2b2b3c;
-  padding: 0.5rem;
-  gap: 0.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+// Tab Switching
+const tabButtons = document.querySelectorAll('.tab-button');
+const navButtons = document.querySelectorAll('#top-nav button');
+const topNav = document.getElementById('top-nav');
+const tabContents = document.querySelectorAll('.tab-content');
+
+function switchTab(target) {
+  topNav.classList.remove('hidden');
+  tabButtons.forEach(btn => btn.classList.remove('active'));
+  navButtons.forEach(btn => btn.classList.remove('active'));
+  tabContents.forEach(tab => tab.classList.add('hidden'));
+
+  document.querySelectorAll(`[data-tab="${target}"]`).forEach(btn => btn.classList.add('active'));
+  document.getElementById(`tab-${target}`).classList.remove('hidden');
 }
 
-#top-nav .nav-icon {
-  background-color: #3b3b4f;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  color: #e0e0e0;
-  cursor: pointer;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  height: 70px;
-  line-height: 1.2;
-  transition: background-color 0.3s, color 0.3s;
+// Removed default tab switch to prevent premature UI changes
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => switchTab(button.getAttribute('data-tab')));
+});
+navButtons.forEach(button => {
+  button.addEventListener('click', () => switchTab(button.getAttribute('data-tab')));
+});
+
+// Event Listeners
+loginButton.addEventListener('click', async () => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: emailInput.value,
+    password: passwordInput.value
+  });
+  if (error) return alert('Login error: ' + error.message);
+  showDashboard(data.user);
+});
+
+signupButton.addEventListener('click', async () => {
+  const { data, error } = await supabase.auth.signUp({
+    email: emailInput.value,
+    password: passwordInput.value
+  });
+  if (error) return alert('Signup error: ' + error.message);
+  showDashboard(data.user);
+});
+
+logoutButton.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  showLogin();
+});
+
+loadCharactersButton.addEventListener('click', loadCharacters);
+loadNpcsButton.addEventListener('click', loadNpcs);
+loadStatBlocksButton.addEventListener('click', loadStatBlocks);
+if (createStatBlockButton) {
+  createStatBlockButton.addEventListener('click', () => {
+    if (currentUser) openModal();
+  });
 }
 
-#top-nav .nav-icon span {
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-  color: #c9d1d9;
-}
-
-#top-nav .nav-icon:hover {
-  background-color: #505071;
-}
-
-#top-nav .nav-icon.active {
-  background-color: #2a5cad;
-  color: #ffffff;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
-}
-
-#tab-bar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.tab-button {
-  flex: 1;
-  text-align: center;
-  padding: 0.75rem;
-  background-color: #3b3b4f;
-  color: #e0e0e0;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px 6px 0 0;
-  margin: 0 0.25rem;
-  font-weight: bold;
-  transition: background-color 0.2s;
-}
-
-.tab-button:hover {
-  background-color: #505071;
-}
-
-.tab-button.active {
-  background-color: #2a5cad;
-  color: #ffffff;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4) inset;
-}
-
-.tab-content {
-  background-color: #2b2b3c;
-  padding: 1rem;
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="text"] {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #444;
-  border-radius: 6px;
-  background-color: #3b3b4f;
-  color: #f0f0f0;
-}
-
-button {
-  padding: 0.75rem 1.5rem;
-  margin-right: 0.5rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #3a7bd5;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #2a5cad;
-}
-
-.hidden {
-  display: none;
-}
-
-#user-name {
-  font-weight: bold;
-  color: #50fa7b;
-}
-
-/* Modal Styling */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-content {
-  background-color: #2b2b3c;
-  padding: 2rem;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 0 20px rgba(0,0,0,0.8);
-  position: relative;
-}
-
-.modal-content h3 {
-  margin-top: 0;
-  color: #e9e9f4;
-}
-
-.modal-content label {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: #c7c7d9;
-}
-
-.modal-content input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #555;
-  border-radius: 4px;
-  margin-top: 0.25rem;
-  background-color: #3b3b4f;
-  color: #f0f0f0;
-}
-
-.modal-content button[type="submit"] {
-  margin-top: 1rem;
-  width: 100%;
-  background-color: #28a745;
-  color: white;
-  font-weight: bold;
-}
-
-.modal-content button[type="submit"]:hover {
-  background-color: #218838;
-}
-
-/* Close button */
-.modal-content .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  color: #c7c7d9;
-  cursor: pointer;
-}
-
-.modal-content .close:hover {
-  color: #ffffff;
-}
+supabase.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    closeModal();
+    showDashboard(session.user);
+    switchTab('home');
+  } else {
+    showLogin();
+  }
+});

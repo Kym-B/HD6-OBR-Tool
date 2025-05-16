@@ -202,7 +202,9 @@ loadCharactersButton.addEventListener('click', loadCharacters);
 loadNpcsButton.addEventListener('click', loadNpcs);
 loadStatBlocksButton.addEventListener('click', loadStatBlocks);
 if (createStatBlockButton) {
-  createStatBlockButton.addEventListener('click', () => openModal());
+  createStatBlockButton.addEventListener('click', () => {
+    if (currentUser) openModal();
+  });
 }
 
 supabase.auth.getSession().then(({ data: { session } }) => {

@@ -152,6 +152,28 @@ async function loadStatBlocks() {
   });
 }
 
+async function loadCharacters() {
+  if (!currentUser) return;
+
+  const { data, error } = await supabase
+    .from('characters')
+    .select('*')
+    .eq('owner_id', currentUser.id)
+    .eq('type', 'PC');
+
+  if (error) {
+    alert('Error loading characters: ' + error.message);
+    return;
+  }
+
+  characterList.innerHTML = '';
+  data.forEach(char => {
+    const li = document.createElement('li');
+    li.textContent = `${char.name} (${char.role})`;
+    characterList.appendChild(li);
+  });
+}
+
 // Tab Switching
 const tabButtons = document.querySelectorAll('.tab-button');
 const navButtons = document.querySelectorAll('#top-nav button');

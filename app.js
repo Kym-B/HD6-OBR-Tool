@@ -40,6 +40,9 @@ const modalClose = document.getElementById('modal-close');
 let currentUser = null;
 let editingStatBlockId = null;
 
+// Ensure modal is hidden on load
+if (modal) modal.classList.add('hidden');
+
 function openModal(stat = null) {
   modal.classList.remove('hidden');
   if (stat) {
@@ -63,7 +66,9 @@ function closeModal() {
   modal.classList.add('hidden');
 }
 
-modalClose.addEventListener('click', closeModal);
+if (modalClose) {
+  modalClose.addEventListener('click', closeModal);
+}
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeModal();
@@ -164,8 +169,7 @@ function switchTab(target) {
   document.getElementById(`tab-${target}`).classList.remove('hidden');
 }
 
-// Initialize default tab
-switchTab('home');
+// Removed default tab switch to prevent premature UI changes
 
 tabButtons.forEach(button => {
   button.addEventListener('click', () => switchTab(button.getAttribute('data-tab')));

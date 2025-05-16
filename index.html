@@ -6,15 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HD6 GM Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <nav id="top-nav">
-    <button data-tab="home" class="nav-icon"><i class="fas fa-home"></i></button>
-    <button data-tab="characters" class="nav-icon"><i class="fas fa-user"></i></button>
-    <button data-tab="npcs" class="nav-icon"><i class="fas fa-users"></i></button>
-    <button data-tab="statblocks" class="nav-icon"><i class="fas fa-dice-d20"></i></button>
-    <button data-tab="combat" class="nav-icon"><i class="fas fa-crosshairs"></i></button>
-  </nav>
+  <button data-tab="home" class="nav-icon">
+    <i class="fas fa-home"></i><br><span>Home</span>
+  </button>
+  <button data-tab="characters" class="nav-icon">
+    <i class="fas fa-user"></i><br><span>Characters</span>
+  </button>
+  <button data-tab="npcs" class="nav-icon">
+    <i class="fas fa-users"></i><br><span>NPCs</span>
+  </button>
+  <button data-tab="statblocks" class="nav-icon">
+    <i class="fas fa-dice-d20"></i><br><span>Stat Blocks</span>
+  </button>
+  <button data-tab="combat" class="nav-icon">
+    <i class="fas fa-crosshairs"></i><br><span>Combat</span>
+  </button>
+</nav>
   <div id="app" style="max-width: 960px; margin: auto;">
     <h1>HD6 GM Dashboard</h1>
     <div id="login-panel" class="panel hidden">

@@ -149,24 +149,29 @@ async function loadStatBlocks() {
 }
 
 // Tab Switching
-// Default to Home tab
 const tabButtons = document.querySelectorAll('.tab-button');
+const navButtons = document.querySelectorAll('#top-nav button');
+const topNav = document.getElementById('top-nav');
 const tabContents = document.querySelectorAll('.tab-content');
 
+function switchTab(target) {
+  topNav.classList.remove('hidden');
+  tabButtons.forEach(btn => btn.classList.remove('active'));
+  navButtons.forEach(btn => btn.classList.remove('active'));
+  tabContents.forEach(tab => tab.classList.add('hidden'));
+
+  document.querySelectorAll(`[data-tab="${target}"]`).forEach(btn => btn.classList.add('active'));
+  document.getElementById(`tab-${target}`).classList.remove('hidden');
+}
+
+// Initialize default tab
+switchTab('home');
+
 tabButtons.forEach(button => {
-  if (button.getAttribute('data-tab') === 'home') {
-    button.classList.add('active');
-    document.getElementById('tab-home').classList.remove('hidden');
-  }
-  button.addEventListener('click', () => {
-    const target = button.getAttribute('data-tab');
-
-    tabButtons.forEach(btn => btn.classList.remove('active'));
-    tabContents.forEach(tab => tab.classList.add('hidden'));
-
-    button.classList.add('active');
-    document.getElementById(`tab-${target}`).classList.remove('hidden');
-  });
+  button.addEventListener('click', () => switchTab(button.getAttribute('data-tab')));
+});
+navButtons.forEach(button => {
+  button.addEventListener('click', () => switchTab(button.getAttribute('data-tab')));
 });
 
 // Event Listeners
@@ -199,6 +204,8 @@ loadStatBlocksButton.addEventListener('click', loadStatBlocks);
 createStatBlockButton.addEventListener('click', () => openModal());
 
 supabase.auth.getSession().then(({ data: { session } }) => {
+  closeModal();
+  switchTab('home');
   if (session) {
     showDashboard(session.user);
   } else {

@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-BR2bslkINP4Nzj+gzNLiW4RhRce5Yq8P0rU0NMFhxTJ3d9jZ++vH6T+h3mHD9N+qUBe7EAhqEozqxrmVRYMcqQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <nav id="top-nav" class="hidden">
+  <nav id="top-nav">
     <button data-tab="home" class="nav-icon"><i class="fas fa-home"></i></button>
     <button data-tab="characters" class="nav-icon"><i class="fas fa-user"></i></button>
     <button data-tab="npcs" class="nav-icon"><i class="fas fa-users"></i></button>
     <button data-tab="statblocks" class="nav-icon"><i class="fas fa-dice-d20"></i></button>
     <button data-tab="combat" class="nav-icon"><i class="fas fa-crosshairs"></i></button>
   </nav>
-  <div id="app">
+  <div id="app" style="max-width: 960px; margin: auto;">
     <h1>HD6 GM Dashboard</h1>
     <div id="login-panel" class="panel hidden">
       <input type="email" id="email" placeholder="Email" />
@@ -28,15 +28,7 @@
       <p>Welcome, <span id="user-name"></span></p>
       <button id="logout-button">Logout</button>
 
-      <div id="tab-bar">
-        <button class="tab-button active" data-tab="home"><i class="fas fa-home"></i> Home</button>
-        <button class="tab-button" data-tab="characters"><i class="fas fa-user"></i> Characters</button>
-        <button class="tab-button" data-tab="npcs"><i class="fas fa-users"></i> NPCs</button>
-        <button class="tab-button" data-tab="statblocks"><i class="fas fa-dice-d20"></i> Stat Blocks</button>
-        <button class="tab-button" data-tab="combat"><i class="fas fa-crosshairs"></i> Combat</button>
-      </div>
-
-      <div class="tab-content" id="tab-home">
+            <div class="tab-content" id="tab-home">
         <h2>Session Overview</h2>
         <p>Welcome to the HyperspaceD6 GM Dashboard. Use the tabs above to manage player characters, NPCs, stat blocks, and combat encounters.</p>
         <ul>

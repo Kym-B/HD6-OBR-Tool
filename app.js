@@ -88,7 +88,6 @@ function showDashboard(user) {
   userNameDisplay.textContent = user.email;
   loginPanel.classList.add('hidden');
   dashboard.classList.remove('hidden');
-  closeModal();
   switchTab('home');
 }
 
@@ -124,9 +123,6 @@ supabase.auth.getSession().then(({ data: { session } }) => {
   if (session) {
     currentUser = session.user;
     showDashboard(currentUser);
-    loadStatBlocks();
-    closeModal();
-    switchTab('home');
   } else {
     showLogin();
   }

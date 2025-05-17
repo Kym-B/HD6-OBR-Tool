@@ -207,6 +207,7 @@ navButtons.forEach(button => {
 });
 
 function showDashboard(user) {
+  loadStatBlocks();
   currentUser = user;
   userNameDisplay.textContent = user.email;
   loginPanel.classList.add('hidden');
@@ -241,7 +242,6 @@ logoutButton.addEventListener('click', async () => {
 
 loadCharactersButton.addEventListener('click', loadCharacters);
 loadNpcsButton.addEventListener('click', loadNpcs);
-loadStatBlocksButton.addEventListener('click', loadStatBlocks);
 if (createStatBlockButton) {
   createStatBlockButton.addEventListener('click', () => {
     if (currentUser) openModal();

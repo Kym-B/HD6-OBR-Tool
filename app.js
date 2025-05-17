@@ -68,7 +68,9 @@ function closeModal() {
 }
 
 if (modalClose) {
-  modalClose.addEventListener('click', closeModal);
+  modalClose.onclick = () => {
+    closeModal();
+  };
 }
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
@@ -207,8 +209,7 @@ navButtons.forEach(button => {
 });
 
 function showDashboard(user) {
-    currentUser = user;
-  loadStatBlocks();
+  currentUser = user;
   userNameDisplay.textContent = user.email;
   loginPanel.classList.add('hidden');
   dashboard.classList.remove('hidden');
@@ -250,8 +251,10 @@ if (createStatBlockButton) {
 
 supabase.auth.getSession().then(({ data: { session } }) => {
   if (session) {
+    currentUser = session.user;
+    showDashboard(currentUser);
+    loadStatBlocks();
     closeModal();
-    showDashboard(session.user);
     switchTab('home');
   } else {
     showLogin();

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stat Blocks | HD6 OBR Tool</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav id="top-nav">
+    <a href="index.html" class="nav-icon"><i class="fas fa-home"></i><br><span>Home</span></a>
+    <a href="characters.html" class="nav-icon"><i class="fas fa-user"></i><br><span>Characters</span></a>
+    <a href="npcs.html" class="nav-icon"><i class="fas fa-users"></i><br><span>NPCs</span></a>
+    <a href="statblocks.html" class="nav-icon active"><i class="fas fa-dice-d20"></i><br><span>Stat Blocks</span></a>
+    <a href="combat.html" class="nav-icon"><i class="fas fa-crosshairs"></i><br><span>Combat</span></a>
+  </nav>
+
+  <div id="app">
+    <h1>Extras / Stat Blocks</h1>
+    <div class="panel">
+      <button id="load-stat-blocks"><i class="fas fa-sync-alt"></i> Load Stat Blocks</button>
+      <ul id="statblock-list"></ul>
+      <button id="create-stat-block"><i class="fas fa-plus"></i> New Stat Block</button>
+    </div>
+    <div id="stat-editor" class="panel hidden">
+      <h3 id="editor-title">Edit Stat Block</h3>
+      <form id="statblock-form">
+        <label>Label: <input type="text" id="editor-label" required /></label>
+        <label>Defense: <input type="number" id="editor-def" required /></label>
+        <label>Initiative: <input type="number" id="editor-init" required /></label>
+        <label>Resolve: <input type="number" id="editor-res" required /></label>
+        <label>DEX: <input type="number" id="editor-dex" required /></label>
+        <label>PER: <input type="number" id="editor-per" required /></label>
+        <label>STR: <input type="number" id="editor-str" required /></label>
+        <label>Blasters: <input type="number" id="editor-blasters" required /></label>
+        <label>Intimidate: <input type="number" id="editor-intimidate" required /></label>
+        <button type="submit">Save</button>
+        <button type="button" id="cancel-edit">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="statblocks.js"></script>
+</body>
+</html>

@@ -43,6 +43,7 @@ let editingStatBlockId = null;
 if (modal) modal.classList.add('hidden');
 
 function openModal(stat = null) {
+  document.body.classList.add('modal-open');
   modal.classList.remove('hidden');
   if (stat) {
     editingStatBlockId = stat.id;
@@ -62,6 +63,7 @@ function openModal(stat = null) {
 }
 
 function closeModal() {
+  document.body.classList.remove('modal-open');
   modal.classList.add('hidden');
 }
 
@@ -131,11 +133,12 @@ async function loadStatBlocks() {
 
     const editBtn = document.createElement('button');
     editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
-    editBtn.onclick = () => {
-      if (currentUser && stat?.id) {
+    editBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (currentUser && stat?.id && !document.body.classList.contains('modal-open')) {
         openModal(stat);
       }
-    };
+    });
 
     const deleteBtn = document.createElement('button');
     deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';

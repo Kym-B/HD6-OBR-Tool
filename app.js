@@ -131,7 +131,11 @@ async function loadStatBlocks() {
 
     const editBtn = document.createElement('button');
     editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
-    editBtn.onclick = () => openModal(stat);
+    editBtn.onclick = () => {
+      if (currentUser && stat?.id) {
+        openModal(stat);
+      }
+    };
 
     const deleteBtn = document.createElement('button');
     deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
@@ -198,6 +202,15 @@ tabButtons.forEach(button => {
 navButtons.forEach(button => {
   button.addEventListener('click', () => switchTab(button.getAttribute('data-tab')));
 });
+
+function showDashboard(user) {
+  currentUser = user;
+  userNameDisplay.textContent = user.email;
+  loginPanel.classList.add('hidden');
+  dashboard.classList.remove('hidden');
+  closeModal();
+  switchTab('home');
+}
 
 // Event Listeners
 loginButton.addEventListener('click', async () => {

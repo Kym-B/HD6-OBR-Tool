@@ -207,8 +207,8 @@ navButtons.forEach(button => {
 });
 
 function showDashboard(user) {
+    currentUser = user;
   loadStatBlocks();
-  currentUser = user;
   userNameDisplay.textContent = user.email;
   loginPanel.classList.add('hidden');
   dashboard.classList.remove('hidden');

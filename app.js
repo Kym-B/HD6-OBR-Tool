@@ -13,29 +13,6 @@ const userNameDisplay = document.getElementById('user-name');
 
 const loadCharactersButton = document.getElementById('load-characters');
 const characterList = document.getElementById('character-list');
-
-const loadNpcsButton = document.getElementById('load-npcs');
-const npcList = document.getElementById('npc-list');
-
-const loadStatBlocksButton = document.getElementById('load-stat-blocks');
-const statBlockList = document.getElementById('statblock-list');
-const createStatBlockButton = document.getElementById('create-stat-block');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function loadCharacters() {
   if (!currentUser) return;
 
@@ -89,6 +66,47 @@ function showDashboard(user) {
   loginPanel.classList.add('hidden');
   dashboard.classList.remove('hidden');
   switchTab('home');
+  loadSessions();
+}
+
+// Session Management
+const sessionList = document.getElementById('session-list');
+const createSessionForm = document.getElementById('create-session-form');
+const newSessionName = document.getElementById('new-session-name');
+
+async function loadSessions() {
+  if (!currentUser) return;
+  const { data, error } = await supabase
+    .from('sessions')
+    .select('*')
+    .eq('gm_id', currentUser.id);
+
+  if (error) {
+    alert('Error loading sessions: ' + error.message);
+    return;
+  }
+
+  sessionList.innerHTML = '';
+  data.forEach(session => {
+    const li = document.createElement('li');
+    li.textContent = `${session.name} (created ${new Date(session.created_at).toLocaleString()})`;
+    sessionList.appendChild(li);
+  });
+}
+
+if (createSessionForm) {
+  createSessionForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = newSessionName.value.trim();
+    if (!name) return;
+    const { error } = await supabase.from('sessions').insert([{ name, gm_id: currentUser.id }]);
+    if (error) {
+      alert('Error creating session: ' + error.message);
+      return;
+    }
+    newSessionName.value = '';
+    loadSessions();
+  });
 }
 
 // Event Listeners
@@ -116,7 +134,6 @@ logoutButton.addEventListener('click', async () => {
 });
 
 loadCharactersButton.addEventListener('click', loadCharacters);
-loadNpcsButton.addEventListener('click', loadNpcs);
 
 
 supabase.auth.getSession().then(({ data: { session } }) => {

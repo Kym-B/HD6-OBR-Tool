@@ -40,6 +40,15 @@
       <button id="logout-button">Logout</button>
 
             <div class="tab-content" id="tab-home">
+        <div id="session-panel">
+          <h3>Your Game Sessions</h3>
+          <ul id="session-list"></ul>
+          <form id="create-session-form">
+            <input type="text" id="new-session-name" placeholder="New Session Name" required />
+            <button type="submit"><i class="fas fa-plus"></i> Create Session</button>
+          </form>
+        </div>
+        <hr>
         <h2>Session Overview</h2>
         <p>Welcome to the HyperspaceD6 GM Dashboard. Use the tabs above to manage player characters, NPCs, stat blocks, and combat encounters.</p>
         <ul>
